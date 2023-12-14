@@ -21,7 +21,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 MODEL_CLASSES = {"gpt2": (GPT2Config, GPT2LMHeadModel, GPT2Tokenizer),}
 config_class, model_class, tokenizer_class = MODEL_CLASSES["gpt2"]
 tokenizer = tokenizer_class.from_pretrained(gen_model_name_or_path, do_lower_case=False)
-model = model_class.from_pretrained(gen_model_name_or_path, torch_dtype=torch.float16)
+model = model_class.from_pretrained(gen_model_name_or_path, load_in_half_prec=True)
 model = model.to(device)
 model = model.float()
 
