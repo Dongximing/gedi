@@ -8,7 +8,7 @@ from transformers import (
     GPT2Config,
     GPT2Tokenizer
 )
-ds = load_from_disk('/home/shaowei/sensitive-blocking/dataset/toxic_prompt_test')
+ds = load_from_disk('/mnt/hdd-data/shaowei/Ximing/dataset/toxic_prompt_test')
 mode = "detoxify"
 code_desired = "true"
 code_undesired = "false"
