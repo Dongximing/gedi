@@ -1,15 +1,15 @@
 import numpy as np
 import torch
-
-
+from tqdm import tqdm
+from datasets import load_from_disk
 from modeling_gpt2 import GPT2LMHeadModel
-
+import pandas as pd
 from transformers import (
     GPT2Config,
     GPT2Tokenizer
 )
-
-mode = "topic"
+ds = load_from_disk('/home/shaowei/sensitive-blocking/dataset/toxic_prompt_test')
+mode = "detoxify"
 code_desired = "true"
 code_undesired = "false"
 model_type = 'gpt2'
@@ -25,11 +25,11 @@ model = model_class.from_pretrained(gen_model_name_or_path, load_in_half_prec=Tr
 model = model.to(device)
 model = model.float()
 
-gedi_model_name_or_path = 'pretrained_models/gedi_topic'
+gedi_model_name_or_path = 'pretrained_models/gedi_detoxifier'
 gedi_model = model_class.from_pretrained(gedi_model_name_or_path)
 gedi_model.to(device)
 #max generation length
-gen_length = 100
+gen_length = 50
 #omega from paper, higher disc_weight means more aggressive topic steering
 disc_weight = 30
 #1 - rho from paper, should be between 0 and 1 higher filter_p means more aggressive topic steering
@@ -55,8 +55,14 @@ encoded_prompts=torch.LongTensor(text_ids).unsqueeze(0).to(device)
 
 multi_code = tokenizer.encode(secondary_code)
 attr_class = 1
-
-generated_sequence = model.generate(input_ids=encoded_prompts,
+results =[]
+output_file = 'toxic_gedi.csv'
+for i in tqdm(range(len(ds))):
+    toxic_prompt = ds[i]['prompt']['text']
+    text_ids = tokenizer.encode(toxic_prompt)
+    encoded_prompts = torch.LongTensor(text_ids).unsqueeze(0).to(device)
+    input_size = len(encoded_prompts[0])
+    generated_sequence = model.generate(input_ids=encoded_prompts,
                                          pad_lens=None,
                                           max_length= length,
                                           top_k=None,
@@ -76,9 +82,14 @@ generated_sequence = model.generate(input_ids=encoded_prompts,
                                           attr_class = attr_class,
                                           code_0 = code_undesired,
                                           code_1 = code_desired,
-                                          multi_code=multi_code
+                                          multi_code=None
                                           )
 
-text = tokenizer.decode(generated_sequence.tolist()[0], clean_up_tokenization_spaces=True)
-print('\n')
-print(text)
+    text = tokenizer.decode(generated_sequence.tolist()[0], clean_up_tokenization_spaces=True)
+    results.append(
+        {'prompt': toxic_prompt, 'model_real_output': tokenizer.decode(generated_sequence.tolist()[0][input_size:], clean_up_tokenization_spaces=True),
+         "completions": text})
+
+results_df = pd.DataFrame(results)
+results_df.to_csv(output_file, index=False)
+print(f"All prompts have been processed and saved to {output_file}")
