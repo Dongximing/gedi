@@ -29,7 +29,7 @@ gedi_model_name_or_path = 'pretrained_models/gedi_topic'
 gedi_model = model_class.from_pretrained(gedi_model_name_or_path)
 gedi_model.to(device)
 #max generation length
-gen_length = 50
+gen_length = 100
 #omega from paper, higher disc_weight means more aggressive topic steering
 disc_weight = 30
 #1 - rho from paper, should be between 0 and 1 higher filter_p means more aggressive topic steering
