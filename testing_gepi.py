@@ -25,7 +25,7 @@ model = model_class.from_pretrained(gen_model_name_or_path, load_in_half_prec=Tr
 model = model.to(device)
 model = model.float()
 
-gedi_model_name_or_path = 'gedi_topic'
+gedi_model_name_or_path = 'pretrained_models/gedi_topic'
 gedi_model = model_class.from_pretrained(gedi_model_name_or_path)
 gedi_model.to(device)
 #max generation length
