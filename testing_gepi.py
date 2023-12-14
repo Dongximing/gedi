@@ -8,6 +8,7 @@ from transformers import (
     GPT2Config,
     GPT2Tokenizer
 )
+import time
 ds = load_from_disk('/mnt/hdd-data/shaowei/Ximing/dataset/toxic_prompt_test')
 mode = "detoxify"
 code_desired = "true"
@@ -62,6 +63,7 @@ for i in tqdm(range(len(ds))):
     text_ids = tokenizer.encode(toxic_prompt)
     encoded_prompts = torch.LongTensor(text_ids).unsqueeze(0).to(device)
     input_size = len(encoded_prompts[0])
+    start_time = time.time()
     generated_sequence = model.generate(input_ids=encoded_prompts,
                                          pad_lens=None,
                                           max_length= length,
@@ -84,12 +86,15 @@ for i in tqdm(range(len(ds))):
                                           code_1 = code_desired,
                                           multi_code=None
                                           )
-
+    end_time = time.time()
+    excution_time = end_time-start_time
     text = tokenizer.decode(generated_sequence.tolist()[0], clean_up_tokenization_spaces=True)
     results.append(
         {'prompt': toxic_prompt, 'model_real_output': tokenizer.decode(generated_sequence.tolist()[0][input_size:], clean_up_tokenization_spaces=True),
-         "completions": text})
+         "completions": text,'total_time':excution_time})
 
 results_df = pd.DataFrame(results)
+time= results_df['total_time'].mean()
+print("time---------->",time)
 results_df.to_csv(output_file, index=False)
 print(f"All prompts have been processed and saved to {output_file}")
