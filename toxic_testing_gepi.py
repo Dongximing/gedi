@@ -9,10 +9,10 @@ from transformers import (
     GPT2Tokenizer
 )
 import time
-ds = load_from_disk('/mnt/hdd-data/shaowei/Ximing/dataset/toxic_prompt_test')
-mode = "detoxify"
-code_desired = "true"
-code_undesired = "false"
+ds = load_from_disk('imdb_neg_2500')
+mode = "sentiment"
+code_desired = "positive"
+code_undesired = "negative"
 model_type = 'gpt2'
 gen_type = "gedi"
 gen_model_name_or_path = "gpt2-xl"
@@ -26,7 +26,7 @@ model = model_class.from_pretrained(gen_model_name_or_path, load_in_half_prec=Tr
 model = model.to(device)
 model = model.float()
 
-gedi_model_name_or_path = 'pretrained_models/gedi_detoxifier'
+gedi_model_name_or_path = 'pretrained_models/gedi_sentiment'
 gedi_model = model_class.from_pretrained(gedi_model_name_or_path)
 gedi_model.to(device)
 #max generation length
@@ -59,7 +59,7 @@ attr_class = 1
 results =[]
 output_file = 'toxic_gedi.csv'
 for i in tqdm(range(len(ds))):
-    toxic_prompt = ds[i]['prompt']['text']
+    toxic_prompt = ds[i]['text']
     text_ids = tokenizer.encode(toxic_prompt)
     encoded_prompts = torch.LongTensor(text_ids).unsqueeze(0).to(device)
     input_size = len(encoded_prompts[0])
