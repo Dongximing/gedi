@@ -50,6 +50,7 @@ for i in tqdm(range(115, len(ds))):
         toxic_prompt = ds[i]['text']
         text_ids = tokenizer.encode(toxic_prompt)
         encoded_prompts = torch.LongTensor(text_ids).unsqueeze(0).to(device)
+        encoded_prompts = encoded_prompts[:,:8]
         input_size = len(encoded_prompts[0])
         start_time = time.time()
         gen_length=input_size+25
