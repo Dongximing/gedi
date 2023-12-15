@@ -11,7 +11,7 @@ from transformers import (
 import time
 # ds = load_dataset('imdb', split='test')
 # ds = ds.select(range(2500))
-ds = pd.read_csv('/mnt/hdd-data/shaowei/Ximing/sentiment_methods/sentiment_halfpos_halfneg_testing_gedi.csv')
+ds = pd.read_csv('/mnt/hdd-data/shaowei/Ximing/gedi/sentiment_halfpos_halfneg_testing_gedi.csv')
 mode = "sentiment"
 # code_desired = "true"
 # code_undesired = "false"
