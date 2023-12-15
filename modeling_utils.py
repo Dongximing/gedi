@@ -1033,6 +1033,7 @@ class PreTrainedModel(nn.Module, ModuleUtilsMixin):
 
 
                         logp_desired = torch.log_softmax(logits0,-1)[:,0]
+
                         logp_undesired = torch.log_softmax(logits0,-1)[:,1]
                     else:
                         seq_len=0
@@ -1040,7 +1041,7 @@ class PreTrainedModel(nn.Module, ModuleUtilsMixin):
                         logp_undesired = (torch.zeros(input_ids.shape[0]) + torch.log(torch.tensor(0.5))).to(input_ids.device)
                         logits_r = torch.zeros(input_ids.shape[0]*2).to(input_ids.device)
 
-
+                    print("logp_desired==============================>",logp_desired)
                 seq_len= seq_len+1
                 gedi_logits= (torch.log_softmax(gedi_outputs[0][:, -1, :],-1)+logits_r.unsqueeze(1))
 
