@@ -46,7 +46,7 @@ attr_class = 1
 results =[]
 output_file = 'sentiment_gedi.csv'
 for i in tqdm(range(len(ds))):
-    toxic_prompt = ds[i]['prompt']['text']
+    toxic_prompt = ds[i]['text']
     text_ids = tokenizer.encode(toxic_prompt)
     encoded_prompts = torch.LongTensor(text_ids).unsqueeze(0).to(device)
     input_size = len(encoded_prompts[0])
