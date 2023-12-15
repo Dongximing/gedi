@@ -31,7 +31,8 @@ def main(test_file, test_column):
     print(len(predicted_classes))
     #sentence_list['model_score'] = predicted_classes
     print("avg score", predicted_classes.count('positive') / len(predicted_classes))
-    sentence_list.to_csv(test_file, index=False)
+    print("avg time",sentence_list['total_time'].mean())
+    #sentence_list.to_csv(test_file, index=False)
 
 
 
