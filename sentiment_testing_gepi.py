@@ -45,14 +45,15 @@ class_bias = 0
 attr_class = 1
 results =[]
 output_file = 'sentiment_gedi.csv'
-for i in tqdm(range(len(ds))):
+for i in tqdm(range(115, len(ds))):
     toxic_prompt = ds[i]['text']
     text_ids = tokenizer.encode(toxic_prompt)
     encoded_prompts = torch.LongTensor(text_ids).unsqueeze(0).to(device)
     input_size = len(encoded_prompts[0])
     start_time = time.time()
     gen_length=input_size+25
-    generated_sequence = model.generate(input_ids=encoded_prompts,
+    try:
+        generated_sequence = model.generate(input_ids=encoded_prompts,
                                          pad_lens=None,
                                           max_length= gen_length,
                                           top_k=None,
@@ -74,6 +75,10 @@ for i in tqdm(range(len(ds))):
                                           code_1 = "positive",
                                           multi_code=None
                                           )
+    except ValueError as e:
+        print(e)
+        continue
+
     end_time = time.time()
     excution_time = end_time-start_time
     text = tokenizer.decode(generated_sequence.tolist()[0], clean_up_tokenization_spaces=True)
