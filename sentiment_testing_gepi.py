@@ -9,8 +9,9 @@ from transformers import (
     GPT2Tokenizer
 )
 import time
-ds = load_dataset('imdb', split='test')
-ds = ds.select(range(2500))
+# ds = load_dataset('imdb', split='test')
+# ds = ds.select(range(2500))
+ds = pd.read_csv('/home/shaowei/sensitive-blocking/sentiment_methods/dataset/sampled_testing_dataset.csv')
 mode = "sentiment"
 # code_desired = "true"
 # code_undesired = "false"
@@ -45,7 +46,7 @@ class_bias = 0
 
 attr_class = 1
 results =[]
-output_file = 'sentiment_all_pos_testing_gedi.csv'
+output_file = 'sentiment_halfpos_halfneg_testing_gedi.csv'
 for i in tqdm(range(len(ds))):
     try:
         toxic_prompt = ds[i]['text']
