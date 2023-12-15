@@ -30,7 +30,7 @@ gedi_model_name_or_path = 'pretrained_models/gedi_sentiment'
 gedi_model = model_class.from_pretrained(gedi_model_name_or_path)
 gedi_model.to(device)
 #max generation length
-gen_length =
+gen_length = 0
 #omega from paper, higher disc_weight means more aggressive topic steering
 disc_weight = 30
 #1 - rho from paper, should be between 0 and 1 higher filter_p means more aggressive topic steering
@@ -51,7 +51,7 @@ for i in tqdm(range(len(ds))):
     encoded_prompts = torch.LongTensor(text_ids).unsqueeze(0).to(device)
     input_size = len(encoded_prompts[0])
     start_time = time.time()
-    gen_length = input_size+25
+    gen_length=input_size+25
     generated_sequence = model.generate(input_ids=encoded_prompts,
                                          pad_lens=None,
                                           max_length= gen_length,
