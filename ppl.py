@@ -10,7 +10,7 @@ def main(test_file, test_column):
     cleaned_sentences = df['completions'].tolist()
 
 
-    results = perplexity.compute(model_id='gpt2-medium',
+    results = perplexity.compute(model_id='gpt2-xl',
                                  add_start_token=False,
                                  predictions=cleaned_sentences)
 
