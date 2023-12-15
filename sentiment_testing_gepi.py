@@ -46,45 +46,48 @@ attr_class = 1
 results =[]
 output_file = 'sentiment_gedi.csv'
 for i in tqdm(range(115, len(ds))):
-    toxic_prompt = ds[i]['text']
-    text_ids = tokenizer.encode(toxic_prompt)
-    encoded_prompts = torch.LongTensor(text_ids).unsqueeze(0).to(device)
-    input_size = len(encoded_prompts[0])
-    start_time = time.time()
-    gen_length=input_size+25
     try:
+        toxic_prompt = ds[i]['text']
+        text_ids = tokenizer.encode(toxic_prompt)
+        encoded_prompts = torch.LongTensor(text_ids).unsqueeze(0).to(device)
+        input_size = len(encoded_prompts[0])
+        start_time = time.time()
+        gen_length=input_size+25
+
         generated_sequence = model.generate(input_ids=encoded_prompts,
-                                         pad_lens=None,
-                                          max_length= gen_length,
-                                          top_k=None,
-                                          top_p=None,
-                                          repetition_penalty= 1.2,
-                                          rep_penalty_scale= 10,
-                                          eos_token_ids = tokenizer.eos_token_id,
-                                          pad_token_id = 0,
-                                          do_sample= False,
-                                          penalize_cond= True,
-                                          gedi_model= gedi_model,
-                                          tokenizer= tokenizer,
-                                          disc_weight= disc_weight,
-                                          filter_p = filter_p,
-                                          target_p = target_p,
-                                          class_bias = class_bias,
-                                          attr_class = attr_class,
-                                          code_0 = "negative",
-                                          code_1 = "positive",
-                                          multi_code=None
-                                          )
+                                             pad_lens=None,
+                                              max_length= gen_length,
+                                              top_k=None,
+                                              top_p=None,
+                                              repetition_penalty= 1.2,
+                                              rep_penalty_scale= 10,
+                                              eos_token_ids = tokenizer.eos_token_id,
+                                              pad_token_id = 0,
+                                              do_sample= False,
+                                              penalize_cond= True,
+                                              gedi_model= gedi_model,
+                                              tokenizer= tokenizer,
+                                              disc_weight= disc_weight,
+                                              filter_p = filter_p,
+                                              target_p = target_p,
+                                              class_bias = class_bias,
+                                              attr_class = attr_class,
+                                              code_0 = "negative",
+                                              code_1 = "positive",
+                                              multi_code=None
+                                              )
+        end_time = time.time()
+        excution_time = end_time - start_time
+        text = tokenizer.decode(generated_sequence.tolist()[0], clean_up_tokenization_spaces=True)
+        results.append(
+            {'prompt': toxic_prompt, 'model_real_output': tokenizer.decode(generated_sequence.tolist()[0][input_size:],
+                                                                           clean_up_tokenization_spaces=True),
+             "completions": text, 'total_time': excution_time})
     except ValueError as e:
         print(e)
         continue
 
-    end_time = time.time()
-    excution_time = end_time-start_time
-    text = tokenizer.decode(generated_sequence.tolist()[0], clean_up_tokenization_spaces=True)
-    results.append(
-        {'prompt': toxic_prompt, 'model_real_output': tokenizer.decode(generated_sequence.tolist()[0][input_size:], clean_up_tokenization_spaces=True),
-         "completions": text,'total_time':excution_time})
+
 
 results_df = pd.DataFrame(results)
 time= results_df['total_time'].mean()
