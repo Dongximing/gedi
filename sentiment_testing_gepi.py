@@ -49,7 +49,7 @@ results =[]
 output_file = 'sentiment_halfpos_halfneg_testing_gedi.csv'
 for i in tqdm(range(len(ds))):
     try:
-        toxic_prompt = ds[i]['text']
+        toxic_prompt = ds[i]['review']
         text_ids = tokenizer.encode(toxic_prompt)
         encoded_prompts = torch.LongTensor(text_ids).unsqueeze(0).to(device)
         encoded_prompts = encoded_prompts[:,:8]
