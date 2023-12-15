@@ -46,7 +46,7 @@ class_bias = 0
 
 attr_class = 1
 results =[]
-ds = ds['review'].tolist()
+ds = ds['reviews'].tolist()
 output_file = 'sentiment_halfpos_halfneg_testing_gedi.csv'
 for i in tqdm(range(len(ds))):
     try:
