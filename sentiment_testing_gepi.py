@@ -45,7 +45,7 @@ class_bias = 0
 attr_class = 1
 results =[]
 output_file = 'sentiment_gedi.csv'
-for i in tqdm(range(115, len(ds))):
+for i in tqdm(range(len(ds))):
     try:
         toxic_prompt = ds[i]['text']
         text_ids = tokenizer.encode(toxic_prompt)
