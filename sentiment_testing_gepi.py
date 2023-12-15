@@ -17,7 +17,7 @@ mode = "sentiment"
 # code_undesired = "false"
 model_type = 'gpt2'
 gen_type = "gedi"
-gen_model_name_or_path = "gpt2-xl"
+gen_model_name_or_path = "gpt2-medium"
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -47,7 +47,7 @@ class_bias = 0
 attr_class = 1
 results =[]
 ds = ds['prompt'].tolist()
-output_file = 'sentiment_all_pos_testing_gedi.csv'
+output_file = 'sentiment_all_pos_gpt_med_testing_gedi.csv'
 for i in tqdm(range(len(ds))):
     try:
         toxic_prompt = ds[i]
