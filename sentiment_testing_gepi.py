@@ -11,7 +11,7 @@ from transformers import (
 import time
 # ds = load_dataset('imdb', split='test')
 # ds = ds.select(range(2500))
-ds = pd.read_csv('/mnt/hdd-data/shaowei/Ximing/gedi/sentiment_halfpos_halfneg_testing_gedi.csv')
+ds = pd.read_csv('/mnt/hdd-data/shaowei/Ximing/gedi/sentiment_all_neg_testing_gedi.csv')
 mode = "sentiment"
 # code_desired = "true"
 # code_undesired = "false"
@@ -47,7 +47,7 @@ class_bias = 0
 attr_class = 1
 results =[]
 ds = ds['prompt'].tolist()
-output_file = 'sentiment_halfpos_halfneg_gpt_med_testing_gedi.csv'
+output_file = 'sentiment_all_neg_gpt_med_testing_gedi.csv'
 for i in tqdm(range(len(ds))):
     try:
         toxic_prompt = ds[i]
