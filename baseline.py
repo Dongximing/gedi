@@ -7,7 +7,7 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 import time
 # ds = load_dataset('imdb', split='test')
 # ds = ds.select(range(2500))
-ds = pd.read_csv('/mnt/hdd-data/shaowei/Ximing/gedi/sentiment_all_pos_testing_gedi.csv')
+ds = pd.read_csv('/mnt/hdd-data/shaowei/Ximing/gedi/sentiment_halfpos_halfneg_testing_gedi.csv')
 
 ds = ds['prompt'].tolist()
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -16,7 +16,7 @@ model = AutoModelForCausalLM.from_pretrained('gpt2-medium')
 tokenizer = AutoTokenizer.from_pretrained('gpt2-medium')
 model = model.to(device)
 results = []
-output_file = 'sentiment_all_pos_gpt_med_testing_baseline.csv'
+output_file = 'sentiment_halfpos_halfneg_gpt_med_testing_baseline.csv'
 for i in tqdm(range(len(ds))):
     try:
         toxic_prompt = ds[i]
