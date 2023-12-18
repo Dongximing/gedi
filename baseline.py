@@ -1,8 +1,7 @@
-import numpy as np
+
 import torch
 from tqdm import tqdm
-from datasets import load_from_disk,load_dataset
-from modeling_gpt2 import GPT2LMHeadModel
+
 import pandas as pd
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import time
