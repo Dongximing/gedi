@@ -28,7 +28,8 @@ for i in tqdm(range(len(ds))):
         start_time = time.time()
         gen_length=input_size+25
         generated_sequence = model.generate(input_ids=encoded_prompts,
-                                            max_length= gen_length
+                                            max_length= gen_length,
+                                            pad_token_id = tokenizer.eos_token_id
                                             )
         end_time = time.time()
         excution_time = end_time - start_time
