@@ -16,7 +16,7 @@ model = AutoModelForCausalLM.from_pretrained('gpt2-medium')
 tokenizer = AutoTokenizer.from_pretrained('gpt2-medium')
 model = model.to(device)
 results = []
-output_file = 'sentiment_all_neg_gpt_med_testing_baseline.csv'
+output_file = 'sentiment_all_pos_gpt_med_testing_baseline.csv'
 for i in tqdm(range(len(ds))):
     try:
         toxic_prompt = ds[i]
