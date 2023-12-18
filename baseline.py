@@ -7,7 +7,7 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 import time
 # ds = load_dataset('imdb', split='test')
 # ds = ds.select(range(2500))
-ds = pd.read_csv('/mnt/hdd-data/shaowei/Ximing/gedi/sentiment_all_neg_testing_gedi.csv')
+ds = pd.read_csv('/mnt/hdd-data/shaowei/Ximing/gedi/sentiment_all_pos_testing_gedi.csv')
 
 ds = ds['prompt'].tolist()
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
