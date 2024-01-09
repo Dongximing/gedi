@@ -29,7 +29,7 @@ def main(test_file, test_column):
             predicted_class = 'positive' if index.item() == 1 else 'negative'
             predicted_classes.append(predicted_class)
     print(len(predicted_classes))
-    #sentence_list['model_score'] = predicted_classes
+    sentence_list['model_score'] = predicted_classes
     print("avg score", predicted_classes.count('positive') / len(predicted_classes))
     print("avg time",sentence_list['average_cost_time'].mean())
     #sentence_list.to_csv(test_file, index=False)
