@@ -5,10 +5,13 @@ from perspective import PerspectiveAPI
 from tqdm import tqdm
 import random
 import argparse
-def analyze_text(blocking_prompt, index, Perspective):
+
+API_KEY = 'AIzaSyDL1Edz1npW9iXNx1O8Pr0_Dm-lQESPk5g"'
+Perspective = PerspectiveAPI(API_KEY)
+def analyze_text(blocking_prompt):
     toxicity_score = None
     try:
-        print(f"index = {index}")
+
 
         result = Perspective.score(blocking_prompt)
         toxicity_score = result.get("TOXICITY")
@@ -23,13 +26,15 @@ def analyze_text(blocking_prompt, index, Perspective):
 def main(model_name, output_file, num_beams, threshold, max_tokens, method, prompt_eng, num_samples, collection_name,
          api, step_size, random_method,scaling_size,input_file):
     df= pd.read_csv(input_file)
+    df['toxic_score'] = df['model_real_output'].apply(analyze_text)
+    df.to_csv(input_file, index=False)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Process some inputs.")
     parser.add_argument("--model_name", type=str, default="openai-community/gpt2-medium",
                         help="The name or path of the model")
-    parser.add_argument("--output_file", type=str, required=True, help="The name of the output CSV file")
+    parser.add_argument("--output_file", type=str, required=False, help="The name of the output CSV file")
     parser.add_argument("--num_beams", type=int, default=20, help="The number of beams for beam search")
     parser.add_argument("--num_samples", type=int, default=20, help="The number of num_samples for sampling search")
     parser.add_argument("--threshold", type=float, default=0.3, help="The threshold")

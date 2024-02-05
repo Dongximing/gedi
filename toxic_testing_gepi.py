@@ -16,7 +16,7 @@ code_undesired = "false"
 model_type = 'gpt2'
 gen_type = "gedi"
 gen_model_name_or_path = "gpt2-medium"
-from perspective import PerspectiveAPI
+# from perspective import PerspectiveAPI
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 MODEL_CLASSES = {"gpt2": (GPT2Config, GPT2LMHeadModel, GPT2Tokenizer),}
@@ -104,10 +104,10 @@ for i in tqdm(range(len(ds))):
     end_time = time.time()
     excution_time = end_time-start_time
     text = tokenizer.decode(generated_sequence.tolist()[0], clean_up_tokenization_spaces=True)
-    API_KEY = 'AIzaSyBuL3LvxN48B5v1AGmLlRfgGpp4SPs-rDo'
-    Perspective = PerspectiveAPI(API_KEY)
+    # API_KEY = 'AIzaSyBuL3LvxN48B5v1AGmLlRfgGpp4SPs-rDo'
+    # Perspective = PerspectiveAPI(API_KEY)
     results.append(
-        {'prompt': toxic_prompt, 'model_real_output': tokenizer.decode(generated_sequence.tolist()[0][input_size:], clean_up_tokenization_spaces=True),'toxic_score':analyze_text(tokenizer.decode(generated_sequence.tolist()[0][input_size:], clean_up_tokenization_spaces=True), 0, Perspective),
+        {'prompt': toxic_prompt, 'model_real_output': tokenizer.decode(generated_sequence.tolist()[0][input_size:], clean_up_tokenization_spaces=True),
          "completions": text,'total_time':excution_time})
 
 results_df = pd.DataFrame(results)
