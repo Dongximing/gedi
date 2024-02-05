@@ -15,6 +15,7 @@ def main(test_file, test_column):
                                  predictions=cleaned_sentences)
 
     print(results)
+    print(df['toxic_score'].mean())
 
 
 if __name__ == "__main__":
