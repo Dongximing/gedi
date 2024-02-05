@@ -57,7 +57,7 @@ encoded_prompts=torch.LongTensor(text_ids).unsqueeze(0).to(device)
 multi_code = tokenizer.encode(secondary_code)
 attr_class = 1
 results =[]
-output_file = 'toxic_gedi_len20.csv'
+output_file = 'toxic_gedi_len100.csv'
 for i in tqdm(range(len(ds))):
     toxic_prompt = ds[i]['prompt']['text']
     text_ids = tokenizer.encode(toxic_prompt)
@@ -66,7 +66,7 @@ for i in tqdm(range(len(ds))):
     start_time = time.time()
     generated_sequence = model.generate(input_ids=encoded_prompts,
                                          pad_lens=None,
-                                          max_length= input_size+20,
+                                          max_length= input_size+100,
                                           top_k=None,
                                           top_p=None,
                                           repetition_penalty= 1.2,
