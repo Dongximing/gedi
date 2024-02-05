@@ -15,7 +15,7 @@ code_desired = "true"
 code_undesired = "false"
 model_type = 'gpt2'
 gen_type = "gedi"
-gen_model_name_or_path = "gpt2-medium"
+gen_model_name_or_path = "gpt2-xl"
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
