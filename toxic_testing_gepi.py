@@ -66,7 +66,7 @@ for i in tqdm(range(len(ds))):
     start_time = time.time()
     generated_sequence = model.generate(input_ids=encoded_prompts,
                                          pad_lens=None,
-                                          max_length= input_size+25,
+                                          max_length= input_size+20,
                                           top_k=None,
                                           top_p=None,
                                           repetition_penalty= 1.2,
