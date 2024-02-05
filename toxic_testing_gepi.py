@@ -9,13 +9,13 @@ from transformers import (
     GPT2Tokenizer
 )
 import time
-ds = load_from_disk('/mnt/hdd-data/shaowei/Ximing/dataset/toxic_prompt_test')
+ds = load_from_disk('/mnt/hdd-data/shaowei/Ximing/cp/sensitive-blocking/toxic_methods')
 mode = "detoxify"
 code_desired = "true"
 code_undesired = "false"
 model_type = 'gpt2'
 gen_type = "gedi"
-gen_model_name_or_path = "gpt2-xl"
+gen_model_name_or_path = "gpt2"
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -26,11 +26,11 @@ model = model_class.from_pretrained(gen_model_name_or_path, load_in_half_prec=Tr
 model = model.to(device)
 model = model.float()
 
-gedi_model_name_or_path = 'pretrained_models/gedi_detoxifier'
+gedi_model_name_or_path = '/mnt/hdd-data/shaowei/Ximing/gedi/pretrained_models/gedi_detoxifier'
 gedi_model = model_class.from_pretrained(gedi_model_name_or_path)
 gedi_model.to(device)
 #max generation length
-gen_length = 50
+gen_length = 20
 #omega from paper, higher disc_weight means more aggressive topic steering
 disc_weight = 30
 #1 - rho from paper, should be between 0 and 1 higher filter_p means more aggressive topic steering
@@ -57,7 +57,7 @@ encoded_prompts=torch.LongTensor(text_ids).unsqueeze(0).to(device)
 multi_code = tokenizer.encode(secondary_code)
 attr_class = 1
 results =[]
-output_file = 'toxic_gedi.csv'
+output_file = 'toxic_gedi_len20.csv'
 for i in tqdm(range(len(ds))):
     toxic_prompt = ds[i]['prompt']['text']
     text_ids = tokenizer.encode(toxic_prompt)
