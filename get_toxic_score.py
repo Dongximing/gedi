@@ -6,9 +6,10 @@ from tqdm import tqdm
 import random
 import argparse
 
-API_KEY = 'AIzaSyDL1Edz1npW9iXNx1O8Pr0_Dm-lQESPk5g"'
+API_KEY = 'AIzaSyDL1Edz1npW9iXNx1O8Pr0_Dm-lQESPk5g'
 Perspective = PerspectiveAPI(API_KEY)
 def analyze_text(blocking_prompt):
+   # blocking_prompt = blocking_prompt.replace('<|endoftext|>','')
     print('blocking_prompt',blocking_prompt)
     toxicity_score = None
     try:
