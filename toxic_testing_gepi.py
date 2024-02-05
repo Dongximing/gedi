@@ -9,7 +9,7 @@ from transformers import (
     GPT2Tokenizer
 )
 import time
-ds = load_from_disk('/mnt/hdd-data/shaowei/Ximing/cp/sensitive-blocking/toxic_methods')
+ds = load_from_disk('/mnt/hdd-data/shaowei/Ximing/cp/sensitive-blocking/toxic_methods/toxic_prompt_test')
 mode = "detoxify"
 code_desired = "true"
 code_undesired = "false"
