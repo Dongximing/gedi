@@ -15,7 +15,7 @@ code_desired = "true"
 code_undesired = "false"
 model_type = 'gpt2'
 gen_type = "gedi"
-gen_model_name_or_path = "gpt2-xl"
+gen_model_name_or_path = "gpt2-medium"
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -66,7 +66,7 @@ for i in tqdm(range(len(ds))):
     start_time = time.time()
     generated_sequence = model.generate(input_ids=encoded_prompts,
                                          pad_lens=None,
-                                          max_length= length,
+                                          max_length= input_size+25,
                                           top_k=None,
                                           top_p=None,
                                           repetition_penalty= 1.2,
