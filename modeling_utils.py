@@ -991,8 +991,10 @@ class PreTrainedModel(nn.Module, ModuleUtilsMixin):
                 next_token_logits = outputs[0][:, -1, :]
             if get_ll:
                 next_token_logp = torch.log_softmax(next_token_logits,-1)
+            print('gedi_modelgedi_modelgedi_modelgedi_modelgedi_modelgedi_modelgedi_model',gedi_model)
             if not(gedi_model is None):
                 #want to compute LM loss here so feeding inputs as labels
+                print('-------------------------------------------------------------')
                 if not gedi_past is None:
                     input_batched = torch.cat((model_inputs["input_ids"],model_inputs["input_ids"]),dim=0)
                     seq_batched = torch.cat((seq_batched,input_batched),dim=1)
@@ -1003,6 +1005,7 @@ class PreTrainedModel(nn.Module, ModuleUtilsMixin):
                     inputs = {"input_ids": seq_batched, "pad_lens": gedi_pad_lens, "past":gedi_past}
 
                 gedi_outputs = gedi_model(**inputs)
+                print('gedi_pastgedi_pastgedi_pastgedi_pastgedi_pastgedi_pastgedi_pastgedi_past',gedi_past)
                 if gedi_past is None:
                     if gedi_outputs[0].shape[1]>1:
                         old_logits = torch.log_softmax(gedi_outputs[0][:, :-1, :],-1)
@@ -1040,6 +1043,7 @@ class PreTrainedModel(nn.Module, ModuleUtilsMixin):
                         logp_desired = (torch.zeros(input_ids.shape[0]) + torch.log(torch.tensor(0.5))).to(input_ids.device)
                         logp_undesired = (torch.zeros(input_ids.shape[0]) + torch.log(torch.tensor(0.5))).to(input_ids.device)
                         logits_r = torch.zeros(input_ids.shape[0]*2).to(input_ids.device)
+                        print("logp_desired==============================>logp_desired==============================>")
 
                     print("logp_desired==============================>",logp_desired)
                 seq_len= seq_len+1
