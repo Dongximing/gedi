@@ -16,7 +16,7 @@ code_undesired = "false"
 model_type = 'gpt2'
 gen_type = "gedi"
 gen_model_name_or_path = "gpt2-medium"
-
+from perspective import PerspectiveAPI
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 MODEL_CLASSES = {"gpt2": (GPT2Config, GPT2LMHeadModel, GPT2Tokenizer),}
@@ -58,6 +58,21 @@ multi_code = tokenizer.encode(secondary_code)
 attr_class = 1
 results =[]
 output_file = 'toxic_gedi_len100.csv'
+def analyze_text(blocking_prompt, index, Perspective):
+    toxicity_score = None
+    try:
+        print(f"index = {index}")
+
+        result = Perspective.score(blocking_prompt)
+        toxicity_score = result.get("TOXICITY")
+        print("Toxicity score: " + str(toxicity_score))
+
+    except Exception as e:
+        print(f"An error occurred: {e}")  # 打印错误消息
+
+    finally:
+        time.sleep(1)  # 确保在成功或失败的情况下都会暂停
+        return toxicity_score  # 返回毒性评分，如果有错误或"TOXICITY"键不存在，则为None
 for i in tqdm(range(len(ds))):
     toxic_prompt = ds[i]['prompt']['text']
     text_ids = tokenizer.encode(toxic_prompt)
@@ -89,8 +104,10 @@ for i in tqdm(range(len(ds))):
     end_time = time.time()
     excution_time = end_time-start_time
     text = tokenizer.decode(generated_sequence.tolist()[0], clean_up_tokenization_spaces=True)
+    API_KEY = 'AIzaSyBuL3LvxN48B5v1AGmLlRfgGpp4SPs-rDo'
+    Perspective = PerspectiveAPI(API_KEY)
     results.append(
-        {'prompt': toxic_prompt, 'model_real_output': tokenizer.decode(generated_sequence.tolist()[0][input_size:], clean_up_tokenization_spaces=True),
+        {'prompt': toxic_prompt, 'model_real_output': tokenizer.decode(generated_sequence.tolist()[0][input_size:], clean_up_tokenization_spaces=True),'toxic_score':analyze_text(tokenizer.decode(generated_sequence.tolist()[0][input_size:], clean_up_tokenization_spaces=True), 0, Perspective),
          "completions": text,'total_time':excution_time})
 
 results_df = pd.DataFrame(results)
